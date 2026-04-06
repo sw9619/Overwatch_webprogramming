@@ -1,0 +1,222 @@
+body {
+    margin: 0;
+    background-image: url("../image/bg.jpg"); 
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    overflow-x: hidden; 
+    overflow-y: auto; 
+    font-family: sans-serif;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly; 
+    align-items: center; 
+    min-height: 100vh; 
+    padding: 2vh 0; 
+    box-sizing: border-box;
+}
+
+/* --- (1번) 캐릭터 이미지 영역 --- */
+.container .heroes {
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: center;
+    width: 100%;
+    max-width: 500px; 
+    gap: 4px; 
+}
+
+/* 1. 캐릭터 전체 박스 (크기 확대 담당 - 기울기 없음!) */
+.container .heroes .hero {
+    width: calc((100% - 24px) / 7); 
+    min-width: 40px; 
+    aspect-ratio: 1 / 1.1; 
+    
+    position: relative; /* 설명창이 기준을 잡을 위치 */
+    cursor: pointer;
+    z-index: 1;
+    
+    /* (조건 1) 크기 확대는 2초 동안 전환 */
+    transition: transform 2s ease-out; 
+}
+
+/* 2. 이미지가 들어가는 기울어진 박스 (배경색 담당) */
+.container .heroes .hero .Image {
+    width: 100%;
+    height: 100%;
+    border: 3px solid #fff;
+    border-radius: 8px; 
+    box-sizing: border-box;
+    background-color: #fff;
+    
+    transform: skewX(-14deg); /* 여기서 14도 기울임 */
+    overflow: hidden; /* 튀어나가는 이미지를 잘라냄 */
+    position: relative; 
+    
+    /* (조건 2) 배경색 0.6초 전환 */
+    transition: background-color 0.6s;
+}
+
+/* 3. 실제 배경 이미지가 들어가는 가상 요소 (밝기 담당) */
+.container .heroes .hero .Image::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -15%;
+    width: 130%;
+    height: 100%;
+    
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+    transform: skewX(14deg); 
+    
+    transition: filter 10s linear; 
+}
+
+/* 4. 캐릭터 상자 바로 아래 뜨는 설명창 */
+.container .heroes .hero .desc {
+    position: absolute;
+    top: 100%; 
+    left: -160%; 
+    width: 200%; 
+    aspect-ratio: 1 / 1; 
+    
+    background-color: rgba(255, 255, 255, 0.95); 
+    border: 3px solid #fff; 
+    border-radius: 20px; 
+    
+    transform: skewX(-14deg); 
+    
+    display: flex;
+    justify-content: flex-start; 
+    align-items: flex-start;    
+    
+    padding: 20px; /* 내부 여백을 줘서 글자가 너무 붙지 않게 조절 */
+    box-sizing: border-box;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+    
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s;
+    z-index: 100;
+}
+
+/* 설명창 안의 텍스트 설정 */
+.container .heroes .hero .desc .text {
+    display: block;
+    transform: skewX(14deg); 
+    color: #000; 
+    text-align: left; 
+    font-size: 3px; 
+    line-height: 1.4;
+    word-break: keep-all;
+    width: 100%; 
+}
+
+/* Overwatch 숫자 제목 스타일 */
+.container .heroes .hero .desc .text strong {
+   
+    font-size: 5px; 
+    display: block;
+    margin-bottom: 2px;
+    color: #ff9c00; 
+}
+
+
+
+
+
+.container .heroes .hero:hover {
+    transform: scale(2);
+    z-index: 100;
+}
+
+.container .heroes .hero:hover .Image {
+    background-color: #ffff00;
+}
+
+
+.container .heroes .hero:hover .Image::before {
+    filter: brightness(200%); 
+}
+
+
+.container .heroes .hero:hover .desc {
+    opacity: 1; 
+    visibility: visible;
+}
+
+.notice {
+    width: 70%; 
+    margin: 0 auto; 
+    height: 25vh; 
+    min-height: 120px; 
+    
+    display: flex;
+    justify-content: center; 
+    align-items: flex-start; 
+    padding-top: 0vh; 
+    
+    background-color: transparent; 
+    border: 4px solid #fff; 
+    border-radius: 20px; 
+    color: #000; 
+    box-sizing: border-box; 
+}
+
+.notice h2 {
+    margin: 0; 
+    font-size: clamp(1.5rem, 3vh, 2.5rem); 
+}
+
+/* --- (4번) 로고 구성 --- */
+.logo {
+    height: 12vh; 
+    max-height: 120px; 
+    display: flex;
+    justify-content: center;
+}
+.logo img {
+    height: 100%; 
+    width: auto;
+    object-fit: contain;
+}
+
+/* --- 이미지 32개 개별 경로 연결 (가상 요소인 ::before에 연결) --- */
+.container .heroes .hero:nth-child(1) .Image::before { background-image: url("../image/hero1.png"); }
+.container .heroes .hero:nth-child(2) .Image::before { background-image: url("../image/hero2.png"); }
+.container .heroes .hero:nth-child(3) .Image::before { background-image: url("../image/hero3.png"); }
+.container .heroes .hero:nth-child(4) .Image::before { background-image: url("../image/hero4.png"); }
+.container .heroes .hero:nth-child(5) .Image::before { background-image: url("../image/hero5.png"); }
+.container .heroes .hero:nth-child(6) .Image::before { background-image: url("../image/hero6.png"); }
+.container .heroes .hero:nth-child(7) .Image::before { background-image: url("../image/hero7.png"); }
+.container .heroes .hero:nth-child(8) .Image::before { background-image: url("../image/hero8.png"); }
+.container .heroes .hero:nth-child(9) .Image::before { background-image: url("../image/hero9.png"); }
+.container .heroes .hero:nth-child(10) .Image::before { background-image: url("../image/hero10.png"); }
+.container .heroes .hero:nth-child(11) .Image::before { background-image: url("../image/hero11.png"); }
+.container .heroes .hero:nth-child(12) .Image::before { background-image: url("../image/hero12.png"); }
+.container .heroes .hero:nth-child(13) .Image::before { background-image: url("../image/hero13.png"); }
+.container .heroes .hero:nth-child(14) .Image::before { background-image: url("../image/hero14.png"); }
+.container .heroes .hero:nth-child(15) .Image::before { background-image: url("../image/hero15.png"); }
+.container .heroes .hero:nth-child(16) .Image::before { background-image: url("../image/hero16.png"); }
+.container .heroes .hero:nth-child(17) .Image::before { background-image: url("../image/hero17.png"); }
+.container .heroes .hero:nth-child(18) .Image::before { background-image: url("../image/hero18.png"); }
+.container .heroes .hero:nth-child(19) .Image::before { background-image: url("../image/hero19.png"); }
+.container .heroes .hero:nth-child(20) .Image::before { background-image: url("../image/hero20.png"); }
+.container .heroes .hero:nth-child(21) .Image::before { background-image: url("../image/hero21.png"); }
+.container .heroes .hero:nth-child(22) .Image::before { background-image: url("../image/hero22.png"); }
+.container .heroes .hero:nth-child(23) .Image::before { background-image: url("../image/hero23.png"); }
+.container .heroes .hero:nth-child(24) .Image::before { background-image: url("../image/hero24.png"); }
+.container .heroes .hero:nth-child(25) .Image::before { background-image: url("../image/hero25.png"); }
+.container .heroes .hero:nth-child(26) .Image::before { background-image: url("../image/hero26.png"); }
+.container .heroes .hero:nth-child(27) .Image::before { background-image: url("../image/hero27.png"); }
+.container .heroes .hero:nth-child(28) .Image::before { background-image: url("../image/hero28.png"); }
+.container .heroes .hero:nth-child(29) .Image::before { background-image: url("../image/hero29.png"); }
+.container .heroes .hero:nth-child(30) .Image::before { background-image: url("../image/hero30.png"); }
+.container .heroes .hero:nth-child(31) .Image::before { background-image: url("../image/hero31.png"); }
+.container .heroes .hero:nth-child(32) .Image::before { background-image: url("../image/hero32.png"); }
